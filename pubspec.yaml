@@ -46,9 +46,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/background.jpg
-    - assets/images/logo.png
-    - assets/images/icon.png
+    - assets/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -70,6 +69,62 @@ flutter:
     - family: Freshman
       fonts:
         - asset: assets/fonts/Freshman.ttf
+
+    - family: Alice
+      fonts:
+        - asset: assets/fonts/AliceRegular.ttf
+
+    - family: Josefin
+      fonts:
+        - asset: assets/fonts/JosefinRegular.ttf
+
+    - family: Lora
+      fonts:
+        - asset: assets/fonts/Lora.ttf
+
+    - family: Ubuntu
+      fonts:
+        - asset: assets/fonts/Ubuntu.ttf
+
+    - family: Charlotte
+      fonts:
+        - asset: assets/fonts/charlotte.ttf
+
+    - family: Fat
+      fonts:
+        - asset: assets/fonts/Fat.ttf
+
+    - family: Remachine
+      fonts:
+        - asset: assets/fonts/Remachine.ttf
+
+    - family: Snacker
+      fonts:
+        - asset: assets/fonts/Snacker.ttf
+
+    - family: Charlie
+      fonts:
+        - asset: assets/fonts/Charlie.ttf
+
+    - family: Adventure
+      fonts:
+        - asset: assets/fonts/Adventure.ttf
+
+    - family: AdventureOutline
+      fonts:
+        - asset: assets/fonts/AdventureOutline.ttf
+
+    - family: Bree
+      fonts:
+        - asset: assets/fonts/Bree.ttf
+
+    - family: Libre
+      fonts:
+        - asset: assets/fonts/LibreRegular.ttf
+
+    - family: LibreBold
+      fonts:
+        - asset: assets/fonts/LibreBold.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
