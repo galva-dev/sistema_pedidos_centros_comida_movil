@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sistema_registro_pedidos/models/Category.dart';
 
-class CardList extends StatelessWidget {
+class CardListCategories extends StatelessWidget {
 
   Category category;
   Function onCardClick;
 
-  CardList({this.category, this.onCardClick});
+  CardListCategories({this.category, this.onCardClick});
 
   @override
   Widget build(BuildContext context) {
