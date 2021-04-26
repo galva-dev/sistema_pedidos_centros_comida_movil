@@ -24,15 +24,6 @@ class WelcomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    '¡BIENVENIDO!',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40,
-                      fontFamily: 'Fat',
-                    ),
-                  ),
-                  SizedBox(height: 30,),
                   ClipOval(
                     child: Container(
                       width: 300,
@@ -46,7 +37,7 @@ class WelcomePage extends StatelessWidget {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(25),
                       splashColor: Colors.red.withOpacity(0.6),
-                      highlightColor: Colors.white.withOpacity(0.9),
+                      highlightColor: Colors.black.withOpacity(0.9),
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>CategoryListPage()));
                       },
@@ -73,6 +64,7 @@ class WelcomePage extends StatelessWidget {
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
+                                    fontFamily: 'Lora'
                                   ),
                                 ),
                               ],

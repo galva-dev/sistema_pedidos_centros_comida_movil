@@ -25,7 +25,7 @@ class SplashPage extends StatelessWidget {
                 Spacer(),
                 ImageSplash(),
                 Spacer(),
-                TitleSplash(),
+                //TitleSplash(),
               ],
             )
         ),
