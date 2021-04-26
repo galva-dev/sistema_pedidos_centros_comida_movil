@@ -8,9 +8,9 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    Future.delayed(Duration(seconds: this.duration),(){
-      Navigator.push(context, MaterialPageRoute(builder: (context) => this.goToPage));
+    Future.delayed(Duration(seconds: this.duration), () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => this.goToPage));
     });
 
     return Scaffold(
@@ -19,21 +19,19 @@ class SplashPage extends StatelessWidget {
         alignment: Alignment.center,
         child: Center(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Spacer(),
-                ImageSplash(),
-                Spacer(),
-                TitleSplash(),
-              ],
-            )
-        ),
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Spacer(),
+            ImageSplash(),
+            Spacer(),
+            //TitleSplash(),
+          ],
+        )),
       ),
     );
   }
 }
-
 
 class TitleSplash extends StatelessWidget {
   @override
@@ -41,10 +39,7 @@ class TitleSplash extends StatelessWidget {
     return Text(
       'UNIVERSIDAD DEL VALLE',
       style: TextStyle(
-          color: Colors.black26,
-          fontSize: 30,
-          fontFamily: 'Freshman'
-      ),
+          color: Colors.black26, fontSize: 30, fontFamily: 'Freshman'),
     );
   }
 }
