@@ -10,7 +10,7 @@ void main() {
       MaterialApp(
         theme: ThemeData(fontFamily: 'Bree'),
         debugShowCheckedModeBanner: false,
-        home: SplashPage(duration: 4, goToPage: WelcomePage(),),
+        home: SplashPage(duration: 4500, goToPage: WelcomePage(),),
       )
   );
 }
