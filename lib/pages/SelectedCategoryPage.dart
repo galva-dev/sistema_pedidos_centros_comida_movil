@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sistema_registro_pedidos/models/Category.dart';
-import 'package:sistema_registro_pedidos/pages/DetailsFoodCenterPage.dart';
-import 'package:sistema_registro_pedidos/widgets/CardListSubCategories.dart';
+import 'package:sistema_registro_pedidos/pages/DetailsFoodPage.dart';
+import 'package:sistema_registro_pedidos/pages/MenuListFoodCenterPage.dart';
+import 'package:sistema_registro_pedidos/widgets/AppBarWidget.dart';
+import 'package:sistema_registro_pedidos/widgets/CardListSubCategoriesWidget.dart';
 
 class SelectedCategoryPage extends StatelessWidget {
   Category selectedCategory;
@@ -14,43 +15,7 @@ class SelectedCategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: Drawer(),
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Spacer(),
-              Container(
-                height: 50,
-                child: Image.asset('assets/images/logo.png'),
-              ),
-              Spacer(),
-            ],
-          ),
-          backgroundColor: Color.fromARGB(255, 20, 20, 20),
-          elevation: 0.0,
-          iconTheme: IconThemeData(color: Colors.white),
-          actions: [
-            Container(
-              margin: EdgeInsets.only(right: 0),
-              padding: EdgeInsets.all(5),
-              child: ClipOval(
-                child: Container(
-                  color: Colors.black,
-                  width: 45,
-                  height: 40,
-                  child: Image(
-                    image:
-                    Image
-                        .asset('assets/images/category/postre.jpg')
-                        .image,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
+        appBar: MainAppBar(),
         body: Container(
             color: Colors.black,
             child: Stack(
@@ -103,8 +68,8 @@ class SelectedCategoryPage extends StatelessWidget {
                                     //TODO navigate to details page
                                     Navigator.push(context, MaterialPageRoute(
                                         builder: (context) =>
-                                            DetailsFoodCenterPage(
-                                              subCategory: this.selectedCategory
+                                            DetailsFoodPage(
+                                              foodCenter: this.selectedCategory
                                                   .subCategories[index],)));
                                   },
                                 );
@@ -120,36 +85,3 @@ class SelectedCategoryPage extends StatelessWidget {
     );
   }
 }
-
-/*
-* child: GridView.count(
-                              crossAxisCount: 2,
-                              children: List.generate(
-                                  this.selectedCategory.subCategories.length,
-                                  (index) {
-                                    return Container(
-                                      child: Column(
-                                        children: [
-                                          ClipOval(
-                                            child: Image.asset(
-                                                'assets/images/category/'+this.selectedCategory.subCategories[index].imgName,
-                                              fit: BoxFit.cover,
-                                              width: 100,
-                                              height: 100,
-                                            ),
-                                          ),
-                                          SizedBox(height: 10,),
-                                          Text(
-                                            this.selectedCategory.subCategories[index].nombre,
-                                            style: TextStyle(
-                                              color: Colors.white,
-
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  }
-                              )
-                            ),
-* */
