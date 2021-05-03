@@ -10,13 +10,14 @@ class FoodCenter{
   double latitud;
   double longitud;
   String direccion;
-  String imgName;
+  String logo;
+  String banner;
   int tipo;
   double rating;
   Color color;
   Icon icon;
-  List<Food> Menu;
-  List<Board> Mesas;
+  List<Food> menu;
+  List<Board> mesas;
 
   FoodCenter(
       this.nombre,
@@ -26,11 +27,12 @@ class FoodCenter{
       this.latitud,
       this.longitud,
       this.direccion,
-      this.imgName,
+      this.logo,
+      this.banner,
       this.tipo,
       this.rating,
       this.color,
       this.icon,
-      this.Menu,
-      this.Mesas);
+      this.menu,
+      this.mesas);
 }

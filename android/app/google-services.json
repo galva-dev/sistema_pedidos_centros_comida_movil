@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "387306138859",
-    "project_id": "sistemapedidoscentroscomida",
-    "storage_bucket": "sistemapedidoscentroscomida.appspot.com"
+    "project_number": "114185611492",
+    "project_id": "sistemaregistropedidos",
+    "storage_bucket": "sistemaregistropedidos.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:387306138859:android:1aa76618e50ad34680e2ae",
+        "mobilesdk_app_id": "1:114185611492:android:d45c0ca8491dbbc38e64f1",
         "android_client_info": {
           "package_name": "com.galva.sistema_registro_pedidos"
         }
       },
       "oauth_client": [
         {
-          "client_id": "387306138859-1dqd1b1m0js4kcpufoskog24qbm70cpu.apps.googleusercontent.com",
+          "client_id": "114185611492-9pgi832dhvedkmb955lfkjv0h0s0a35g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.galva.sistema_registro_pedidos",
@@ -22,20 +22,20 @@
           }
         },
         {
-          "client_id": "387306138859-ick124cantd2bln0kehrpct1j0ol5tec.apps.googleusercontent.com",
+          "client_id": "114185611492-81ctcqi4j33q39obsacaegagvue4k3i8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAYYmkkqaU3dw4CZ8EbkcV3OMPB87YB1F8"
+          "current_key": "AIzaSyBlUAJuZcns7VhQFlQ_r8v_oPFVRNo9rUc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "387306138859-ick124cantd2bln0kehrpct1j0ol5tec.apps.googleusercontent.com",
+              "client_id": "114185611492-81ctcqi4j33q39obsacaegagvue4k3i8.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
