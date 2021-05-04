@@ -17,10 +17,13 @@ dependencies:
   lottie:
   firebase_auth: ^1.1.2
   google_sign_in: ^5.0.2
+  firebase_core:
   provider:
   firebase_database:
   firebase_storage:
   google_maps_flutter:
+  location:
+  flutter_polyline_points:
 
 dev_dependencies:
   flutter_test:

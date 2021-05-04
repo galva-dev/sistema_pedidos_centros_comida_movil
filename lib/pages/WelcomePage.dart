@@ -1,13 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:sistema_registro_pedidos/helpers/BouncyPageRoute.dart';
 import 'package:sistema_registro_pedidos/pages/CategoryListPage.dart';
 import 'package:sistema_registro_pedidos/provider/GoogleProvider.dart';
 import 'package:sistema_registro_pedidos/widgets/WelcomeWidget.dart';
 
 class WelcomePage extends StatelessWidget {
+
   Widget buildLoading() => Center(
         child: Center(child: CircularProgressIndicator()),
       );
