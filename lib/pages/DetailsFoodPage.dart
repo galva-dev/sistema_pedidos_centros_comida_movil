@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sistema_registro_pedidos/models/Food.dart';
+import 'package:location/location.dart';
 import 'package:sistema_registro_pedidos/models/FoodCenter.dart';
+import 'package:sistema_registro_pedidos/pages/MapPage.dart';
 import 'package:sistema_registro_pedidos/widgets/ThemeButton.dart';
 
 class DetailsFoodPage extends StatefulWidget {
@@ -15,6 +16,22 @@ class DetailsFoodPage extends StatefulWidget {
 }
 
 class _DetailsFoodPageState extends State<DetailsFoodPage> {
+  final Location location = Location();
+  PermissionStatus _permissionGranted;
+
+  Future<void> _requestPermission() async {
+    if (_permissionGranted != PermissionStatus.granted) {
+      final PermissionStatus permissionRequestedResult =
+      await location.requestPermission();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _permissionGranted == PermissionStatus.granted ? null : _requestPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -192,7 +209,7 @@ class _DetailsFoodPageState extends State<DetailsFoodPage> {
                   ),
                   ThemeButton(
                     onClick: () {
-
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MapPage()));
                     },
                     label: "Ver ubicacion en el mapa",
                     icon: Icon(FontAwesomeIcons.mapMarkedAlt),
