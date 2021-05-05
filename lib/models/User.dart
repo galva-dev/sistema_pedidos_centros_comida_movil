@@ -1,6 +1,6 @@
 class User {
   String username;
-  int nroPedidos;
+  int email;
 
-  User(this.username, this.nroPedidos);
+  User(this.username, this.email);
 }

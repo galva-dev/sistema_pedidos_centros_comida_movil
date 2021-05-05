@@ -22,14 +22,16 @@ class _DetailsFoodPageState extends State<DetailsFoodPage> {
   Future<void> _requestPermission() async {
     if (_permissionGranted != PermissionStatus.granted) {
       final PermissionStatus permissionRequestedResult =
-      await location.requestPermission();
+          await location.requestPermission();
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _permissionGranted == PermissionStatus.granted ? null : _requestPermission();
+    _permissionGranted == PermissionStatus.granted
+        ? null
+        : _requestPermission();
   }
 
   @override
@@ -209,7 +211,12 @@ class _DetailsFoodPageState extends State<DetailsFoodPage> {
                   ),
                   ThemeButton(
                     onClick: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MapPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MapPage(
+                                    foodCenter: this.widget.foodCenter,
+                                  )));
                     },
                     label: "Ver ubicacion en el mapa",
                     icon: Icon(FontAwesomeIcons.mapMarkedAlt),

@@ -4,15 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sistema_registro_pedidos/models/Food.dart';
 import 'package:sistema_registro_pedidos/models/FoodCenter.dart';
 
-const LatLng SOURCE_LOCATION = LatLng(-16.50305726028899, -68.11996151103371);
-const LatLng DESTINATION_LOCATION =
-    LatLng(-16.49972133613206, -68.12443479847471);
 const double CAMERA_ZOOM = 16;
-const double CAMERA_TILT = 10;
+const double CAMERA_TILT = 50;
 const double CAMERA_BEARING = 30;
 const String MAP_STYLE = '''[
 {
@@ -277,15 +274,13 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  Completer<GoogleMapController> _controller = Completer();
-  BitmapDescriptor sourceIcon;
-  BitmapDescriptor destinationIcon;
+  GoogleMapController _controller;
   Set<Marker> _markers = Set<Marker>();
   final user = FirebaseAuth.instance.currentUser;
   double pinPillPosition = PIN_VISIBLE_POSITION;
 
-  LatLng currentLocation;
-  LatLng destinationLocation;
+  LatLng currentLocation = LatLng(-16.4994641047607, -68.12381440408689);
+  LatLng destinationLocation = LatLng(-16.499513253747285, -68.12448863602962);
 
   Set<Polyline> _polylines = Set<Polyline>();
   List<LatLng> polylinesCoordinates = [];
@@ -296,15 +291,22 @@ class _MapPageState extends State<MapPage> {
     super.initState();
     //inicializamos las polilineas
     polylinesPoints = PolylinePoints();
-    //establecer la ubicacion inicial
     setInitialLocation();
   }
 
-  void setInitialLocation() {
-    currentLocation =
-        LatLng(SOURCE_LOCATION.latitude, SOURCE_LOCATION.longitude);
-    destinationLocation =
-        LatLng(DESTINATION_LOCATION.latitude, DESTINATION_LOCATION.longitude);
+  void setInitialLocation() async {
+    var position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    setState(() {
+      currentLocation = LatLng(position.latitude, position.longitude);
+      destinationLocation =
+          LatLng(
+              this.widget.foodCenter.latitud, this.widget.foodCenter.longitud);
+    });
+    print("UBICACION LOCATOR");
+    print("$currentLocation");
+    print("$destinationLocation");
+    showPinsOnMap();
   }
 
   @override
@@ -313,7 +315,7 @@ class _MapPageState extends State<MapPage> {
         zoom: CAMERA_ZOOM,
         tilt: CAMERA_TILT,
         bearing: CAMERA_BEARING,
-        target: SOURCE_LOCATION);
+        target: currentLocation);
 
     return Scaffold(
       body: Stack(
@@ -329,8 +331,7 @@ class _MapPageState extends State<MapPage> {
               initialCameraPosition: initialCameraPosition,
               onMapCreated: (GoogleMapController controller) {
                 controller.setMapStyle(MAP_STYLE);
-                _controller.complete(controller);
-                showPinsOnMap();
+                _controller = controller;
               },
               onTap: (LatLng loc) {
                 setState(() {
@@ -343,55 +344,63 @@ class _MapPageState extends State<MapPage> {
             top: 50,
             left: 0,
             right: 0,
-            child: Container(
-              padding: EdgeInsets.all(15),
-              margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
-                        blurRadius: 10,
-                        offset: Offset.zero)
-                  ]),
-              child: Row(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        image: DecorationImage(
-                            image: NetworkImage(user.photoURL),
-                            fit: BoxFit.cover),
-                        border: Border.all(color: Colors.green, width: 2)),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        user.displayName,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.grey),
-                      ),
-                      Text(
-                        'Mi ubicacion',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.green),
-                      )
-                    ],
-                  )),
-                  Icon(
-                    FontAwesomeIcons.locationArrow,
-                    size: 20,
-                    color: Colors.green,
-                  )
-                ],
+            child: InkWell(
+              onTap: (){
+                _controller.animateCamera(
+                    CameraUpdate.newCameraPosition(CameraPosition(target: currentLocation, zoom: 16, bearing: 90, tilt: 55)));
+              },
+              child: Container(
+                padding: EdgeInsets.all(15),
+                margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(100),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          blurRadius: 10,
+                          offset: Offset.zero)
+                    ]),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          image: DecorationImage(
+                              image: NetworkImage(user.photoURL),
+                              fit: BoxFit.cover),
+                          border: Border.all(color: Colors.green, width: 2)),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              user.displayName,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, color: Colors
+                                  .grey),
+                            ),
+                            Text(
+                              'Mi ubicacion',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, color: Colors
+                                  .green),
+                            )
+                          ],
+                        )),
+                    Icon(
+                      FontAwesomeIcons.locationArrow,
+                      size: 20,
+                      color: Colors.green,
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -401,77 +410,83 @@ class _MapPageState extends State<MapPage> {
             left: 0,
             right: 50,
             bottom: this.pinPillPosition,
-            child: Container(
-              margin: EdgeInsets.all(20),
-              padding: EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(40),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
-                        blurRadius: 10,
-                        offset: Offset.zero)
-                  ]),
-              child: Column(
-                children: [
-                  Container(
+            child: InkWell(
+              onTap: (){
+                _controller.animateCamera(
+                    CameraUpdate.newCameraPosition(CameraPosition(target: destinationLocation, zoom: 16, bearing: 90, tilt: 55)));
+              },
+              child: Container(
+                margin: EdgeInsets.all(20),
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
                     color: Colors.white,
-                    child: Row(
-                      children: [
-                        Stack(
-                          children: [
-                            ClipOval(
-                              child: Image.network(
-                                this.widget.foodCenter.logo,
-                                width: 60,
-                                height: 60,
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                          ],
-                          clipBehavior: Clip.none,
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    borderRadius: BorderRadius.circular(40),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          blurRadius: 10,
+                          offset: Offset.zero)
+                    ]),
+                child: Column(
+                  children: [
+                    Container(
+                      color: Colors.white,
+                      child: Row(
+                        children: [
+                          Stack(
                             children: [
-                              Text(
-                                this.widget.foodCenter.nombre,
-                                style: TextStyle(
+                              ClipOval(
+                                child: Image.network(
+                                  this.widget.foodCenter.logo,
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            ],
+                            clipBehavior: Clip.none,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  this.widget.foodCenter.nombre,
+                                  style: TextStyle(
+                                      color: Colors.grey.shade700,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                ),
+                                Text(
+                                  this.widget.foodCenter.descripcion,
+                                  style: TextStyle(
                                     color: Colors.grey.shade700,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 15),
-                              ),
-                              Text(
-                                this.widget.foodCenter.descripcion,
-                                style: TextStyle(
-                                  color: Colors.grey.shade700,
-                                  fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                this.widget.foodCenter.direccion,
-                                style: TextStyle(
-                                  color: Colors.redAccent,
-                                  fontWeight: FontWeight.bold,
+                                Text(
+                                  this.widget.foodCenter.direccion,
+                                  style: TextStyle(
+                                    color: Colors.redAccent,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Icon(
-                          FontAwesomeIcons.locationArrow,
-                          color: Colors.redAccent,
-                          size: 20,
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                          Icon(
+                            FontAwesomeIcons.locationArrow,
+                            color: Colors.redAccent,
+                            size: 20,
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           )
@@ -482,6 +497,9 @@ class _MapPageState extends State<MapPage> {
 
   void showPinsOnMap() {
     setState(() {
+      print("UBICACION DEL MARKER");
+      print("$currentLocation");
+      print("$destinationLocation");
       _markers.add(Marker(
           markerId: MarkerId('SourcePin'),
           position: currentLocation,
@@ -496,9 +514,11 @@ class _MapPageState extends State<MapPage> {
             setState(() {
               this.pinPillPosition = PIN_VISIBLE_POSITION;
             });
-            setPolylines();
+            //setPolylines();
           }));
     });
+    _controller.animateCamera(
+        CameraUpdate.newCameraPosition(CameraPosition(target: currentLocation, zoom: 16, bearing: 90, tilt: 45)));
   }
 
   void setPolylines() async {
