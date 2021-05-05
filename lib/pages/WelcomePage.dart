@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sistema_registro_pedidos/pages/CategoryListPage.dart';
+import 'package:sistema_registro_pedidos/pages/HomePage.dart';
 import 'package:sistema_registro_pedidos/provider/GoogleProvider.dart';
 import 'package:sistema_registro_pedidos/widgets/WelcomeWidget.dart';
 
@@ -25,7 +25,7 @@ class WelcomePage extends StatelessWidget {
               return buildLoading();
             } else if (snapshot.hasData) {
               print('ME VOY A LA PAGINA');
-              return CategoryListPage();
+              return HomePage();
             } else {
               print('ME MANTENGO EN LA PAGINA');
               return WelcomeWidget();

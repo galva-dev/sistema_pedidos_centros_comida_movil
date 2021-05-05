@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sistema_registro_pedidos/helpers/Utils.dart';
-import 'package:sistema_registro_pedidos/pages/CategoryListPage.dart';
+import 'package:sistema_registro_pedidos/pages/HomePage.dart';
 import 'package:sistema_registro_pedidos/pages/MapPage.dart';
 import 'package:sistema_registro_pedidos/pages/SelectedCategoryPage.dart';
 import 'package:sistema_registro_pedidos/pages/SplashScreenPage.dart';
@@ -15,7 +15,7 @@ Future main() async{
       MaterialApp(
         theme: ThemeData(fontFamily: 'Bree'),
         debugShowCheckedModeBanner: false,
-        home: MapPage(foodCenter: Utils.getMockedCategories()[0].subCategories[0],)//SplashPage(duration: 4300, goToPage: WelcomePage(),),
+        home: SplashPage(duration: 4300, goToPage: WelcomePage(),),
       )
   );
 }
