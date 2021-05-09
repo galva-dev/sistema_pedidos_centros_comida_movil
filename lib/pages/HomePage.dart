@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sistema_registro_pedidos/helpers/Utils.dart';
 import 'package:sistema_registro_pedidos/models/Category.dart';
 import 'package:sistema_registro_pedidos/pages/CategoryListPage.dart';
-import 'package:sistema_registro_pedidos/pages/FoodCentersMap.dart';
+import 'package:sistema_registro_pedidos/pages/FoodCentersMapPage.dart';
 import 'package:sistema_registro_pedidos/pages/ProfilePage.dart';
 import 'package:sistema_registro_pedidos/pages/ScannerQRPage.dart';
 import 'package:sistema_registro_pedidos/pages/SelectedCategoryPage.dart';
