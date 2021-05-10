@@ -232,7 +232,15 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                       ),
                     ),
-                  )
+                  ),
+                  SizedBox(height: 10,),
+                  ElevatedButton(
+                      onPressed: () {
+                        final provider =
+                        Provider.of<GoogleSignInProvider>(context, listen: false);
+                        provider.logout();
+                      },
+                      child: Text('Cerrar Sesion'))
                 ],
               ),
             ),

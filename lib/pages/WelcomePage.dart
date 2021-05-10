@@ -6,7 +6,6 @@ import 'package:sistema_registro_pedidos/provider/GoogleProvider.dart';
 import 'package:sistema_registro_pedidos/widgets/WelcomeWidget.dart';
 
 class WelcomePage extends StatelessWidget {
-
   Widget buildLoading() => Center(
         child: Center(child: CircularProgressIndicator()),
       );
@@ -14,8 +13,10 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ChangeNotifierProvider(
-        create: (context) => GoogleSignInProvider(),
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => GoogleSignInProvider()),
+        ],
         child: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {

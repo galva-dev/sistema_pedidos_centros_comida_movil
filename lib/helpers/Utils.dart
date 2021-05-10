@@ -23,14 +23,18 @@ class Utils {
             1,
             4.5,
             Colors.blueAccent,
-            Icon(FontAwesomeIcons.glassMartiniAlt),
-            [
-              Food('Pollo 1', 21.50, 'Descripcion del pollo 1', 'https://cdn.pixabay.com/photo/2014/01/24/04/05/fried-chicken-250863_960_720.jpg'),
-              Food('Pollo 2', 22.50, 'Descripcion del pollo 2', 'https://cdn.pixabay.com/photo/2016/08/30/18/45/grilled-1631727_960_720.jpg'),
-              Food('Pollo 3', 23.50, 'Descripcion del pollo 3', 'https://cdn.pixabay.com/photo/2016/07/31/18/00/chicken-1559579_960_720.jpg'),
-              Food('Pollo 4', 24.50, 'Descripcion del pollo 4', 'https://cdn.pixabay.com/photo/2018/10/28/19/44/schnitzel-3779726_960_720.jpg'),
-              Food('Pollo 5', 25.50, 'Descripcion del pollo 5', 'https://cdn.pixabay.com/photo/2014/12/30/09/55/chicken-583761_960_720.jpg'),
-            ], []),
+            Icon(FontAwesomeIcons.glassMartiniAlt), [
+          Food('Pollo 1', 21.50, 'Descripcion del pollo 1',
+              'https://cdn.pixabay.com/photo/2014/01/24/04/05/fried-chicken-250863_960_720.jpg'),
+          Food('Pollo 2', 22.50, 'Descripcion del pollo 2',
+              'https://cdn.pixabay.com/photo/2016/08/30/18/45/grilled-1631727_960_720.jpg'),
+          Food('Pollo 3', 23.50, 'Descripcion del pollo 3',
+              'https://cdn.pixabay.com/photo/2016/07/31/18/00/chicken-1559579_960_720.jpg'),
+          Food('Pollo 4', 24.50, 'Descripcion del pollo 4',
+              'https://cdn.pixabay.com/photo/2018/10/28/19/44/schnitzel-3779726_960_720.jpg'),
+          Food('Pollo 5', 25.50, 'Descripcion del pollo 5',
+              'https://cdn.pixabay.com/photo/2014/12/30/09/55/chicken-583761_960_720.jpg'),
+        ]),
         FoodCenter(
             'Bar alberto',
             '154102859',
@@ -44,7 +48,7 @@ class Utils {
             1,
             2.5,
             Colors.blueAccent,
-            Icon(FontAwesomeIcons.glassMartiniAlt), [], []),
+            Icon(FontAwesomeIcons.glassMartiniAlt), []),
         FoodCenter(
             'Bar juan',
             '154102859',
@@ -58,7 +62,7 @@ class Utils {
             1,
             1.5,
             Colors.blueAccent,
-            Icon(FontAwesomeIcons.glassMartiniAlt), [], []),
+            Icon(FontAwesomeIcons.glassMartiniAlt), []),
         FoodCenter(
             'Bar cristiano',
             '154102859',
@@ -72,7 +76,7 @@ class Utils {
             1,
             3.5,
             Colors.blueAccent,
-            Icon(FontAwesomeIcons.glassMartiniAlt), [], []),
+            Icon(FontAwesomeIcons.glassMartiniAlt), []),
         FoodCenter(
             'Bar messi',
             '154102859',
@@ -86,7 +90,7 @@ class Utils {
             1,
             5.0,
             Colors.blueAccent,
-            Icon(FontAwesomeIcons.glassMartiniAlt), [], []),
+            Icon(FontAwesomeIcons.glassMartiniAlt), []),
       ]),
       Category(
           "CAFE", Icon(FontAwesomeIcons.mugHot), Colors.red, 'cafe.jpg', []),

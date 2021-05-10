@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 import 'package:sistema_registro_pedidos/models/FoodCenter.dart';
 import 'package:sistema_registro_pedidos/pages/MapPage.dart';
+import 'package:sistema_registro_pedidos/pages/ScannerQRPage.dart';
 import 'package:sistema_registro_pedidos/widgets/ThemeButton.dart';
 
 class DetailsFoodPage extends StatefulWidget {
@@ -48,7 +49,7 @@ class _DetailsFoodPageState extends State<DetailsFoodPage> {
               child: Stack(
                 children: [
                   Container(
-                    height: 350,
+                    height: 300,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: Image.network(this.widget.foodCenter.banner)
@@ -90,7 +91,7 @@ class _DetailsFoodPageState extends State<DetailsFoodPage> {
                               children: [
                                 Text(this.widget.foodCenter.nombre,
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 50)),
+                                        color: Colors.white, fontSize: 30)),
                                 SizedBox(height: 10),
                                 Text(this.widget.foodCenter.descripcion,
                                     style: TextStyle(
@@ -105,125 +106,139 @@ class _DetailsFoodPageState extends State<DetailsFoodPage> {
             ),
             Expanded(
                 child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Center(
-                        child: Text(
-                      '¡Disfrute de nuestro exquisito menú!',
-                      style:
-                          TextStyle(color: Colors.grey.shade700, fontSize: 20),
-                    )),
-                  ),
-                  Container(
-                    height: 320,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: this.widget.foodCenter.menu.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () {},
-                          child: Column(
-                            children: [
-                              Stack(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.all(15),
-                                    width: 250,
-                                    height: 200,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(25),
-                                        image: DecorationImage(
-                                          image: NetworkImage(this
-                                              .widget
-                                              .foodCenter
-                                              .menu[index]
-                                              .img),
-                                          fit: BoxFit.cover,
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.black.withOpacity(0.2),
-                                              offset: Offset.zero,
-                                              blurRadius: 10)
-                                        ]),
-                                  ),
-                                  Positioned(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Container(
-                                        height: 80,
-                                        width: 80,
-                                        decoration: BoxDecoration(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Center(
+                          child: Text(
+                        '¡Disfrute de nuestro exquisito menú!',
+                        style:
+                            TextStyle(color: Colors.grey.shade700, fontSize: 20),
+                      )),
+                    ),
+                    Container(
+                      height: 320,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: this.widget.foodCenter.menu.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            onTap: () {},
+                            child: Column(
+                              children: [
+                                Stack(
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.all(15),
+                                      width: 250,
+                                      height: 200,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(25),
                                           image: DecorationImage(
-                                            image: AssetImage(
-                                                'assets/images/price.png'),
+                                            image: NetworkImage(this
+                                                .widget
+                                                .foodCenter
+                                                .menu[index]
+                                                .img),
+                                            fit: BoxFit.cover,
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color:
+                                                    Colors.black.withOpacity(0.2),
+                                                offset: Offset.zero,
+                                                blurRadius: 10)
+                                          ]),
+                                    ),
+                                    Positioned(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Container(
+                                          height: 80,
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                  'assets/images/price.png'),
+                                            ),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                this
+                                                    .widget
+                                                    .foodCenter
+                                                    .menu[index]
+                                                    .precio
+                                                    .toString(),
+                                                style: TextStyle(fontSize: 25),
+                                              ),
+                                              Text('Bs.')
+                                            ],
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                           ),
                                         ),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              this
-                                                  .widget
-                                                  .foodCenter
-                                                  .menu[index]
-                                                  .precio
-                                                  .toString(),
-                                              style: TextStyle(fontSize: 25),
-                                            ),
-                                            Text('Bs.')
-                                          ],
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                        ),
                                       ),
+                                      right: 10,
+                                      bottom: 10,
                                     ),
-                                    right: 10,
-                                    bottom: 10,
+                                  ],
+                                ),
+                                Container(
+                                  child: Text(
+                                    this.widget.foodCenter.menu[index].nombre,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 20),
                                   ),
-                                ],
-                              ),
-                              Container(
-                                child: Text(
-                                  this.widget.foodCenter.menu[index].nombre,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 20),
                                 ),
-                              ),
-                              Container(
-                                child: Text(
-                                  this
-                                      .widget
-                                      .foodCenter
-                                      .menu[index]
-                                      .descripcion,
-                                  style: TextStyle(color: Colors.grey),
+                                Container(
+                                  child: Text(
+                                    this
+                                        .widget
+                                        .foodCenter
+                                        .menu[index]
+                                        .descripcion,
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  ThemeButton(
-                    onClick: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MapPage(
-                                    foodCenter: this.widget.foodCenter,
-                                  )));
-                    },
-                    label: "Ver ubicacion en el mapa",
-                    icon: Icon(FontAwesomeIcons.mapMarkedAlt),
-                    color: Colors.green,
-                    highlight: Colors.green.shade900,
-                  )
-                ],
+                    ThemeButton(
+                      onClick: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MapPage(
+                                      foodCenter: this.widget.foodCenter,
+                                    )));
+                      },
+                      label: "Ver ubicacion en el mapa",
+                      icon: Icon(FontAwesomeIcons.mapMarkedAlt),
+                      color: Colors.green,
+                      highlight: Colors.green.shade900,
+                    ),
+                    ThemeButton(
+                      onClick: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ScannerQRPage()));
+                      },
+                      label: "Escanear codigo QR",
+                      icon: Icon(FontAwesomeIcons.qrcode),
+                      color: Colors.red.shade500,
+                      highlight: Colors.red.shade900,
+                    )
+                  ],
+                ),
               ),
             )),
           ],

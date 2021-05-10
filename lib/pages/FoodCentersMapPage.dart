@@ -9,7 +9,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sistema_registro_pedidos/models/FoodCenter.dart';
 import 'package:http/http.dart' as http;
 
-
 const double CAMERA_ZOOM = 16;
 const double CAMERA_TILT = 50;
 const double CAMERA_BEARING = 30;
@@ -317,18 +316,16 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
       Color color;
 
       for (var key in keys) {
-
         _markers.add(
           Marker(
-            markerId: MarkerId(values[key]['nombre']),
-            position: LatLng(values[key]['latitud'], values[key]['longitud']),
-            icon:
-                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-            infoWindow: InfoWindow(
-              title: values[key]['nombre'],
-              snippet: values[key]['direccion'],
-            )
-          ),
+              markerId: MarkerId(values[key]['nombre']),
+              position: LatLng(values[key]['latitud'], values[key]['longitud']),
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueRed),
+              infoWindow: InfoWindow(
+                title: values[key]['nombre'],
+                snippet: values[key]['direccion'],
+              )),
         );
         switch (values[key]['tipo']) {
           case 1:
@@ -373,7 +370,7 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
             values[key]['tipo'],
             double.parse(values[key]['rating'].toString()),
             color,
-            icono, [], []));
+            icono, []));
       }
     });
     setState(() {
@@ -445,7 +442,7 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
                     margin:
                         EdgeInsets.only(right: 25, bottom: 5, left: 25, top: 5),
                     height: 125.0,
-                    width: 290.0,
+                    width: 300.0,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         boxShadow: [
@@ -460,32 +457,58 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
                             borderRadius: BorderRadius.circular(50.0),
                             color: Colors.black45.withOpacity(0.0)),
                         child: Row(children: [
-                          Container(
-                              height: 100.0,
-                              width: 100.0,
-                              decoration: BoxDecoration(
+                          Column(
+                            children: [
+                              Container(
+                                height: 55.0,
+                                width: 55.0,
+                                decoration: BoxDecoration(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(50)),
                                   image: DecorationImage(
                                       image: NetworkImage(
                                           _centrosComida[index].logo),
-                                      fit: BoxFit.fill))),
+                                      fit: BoxFit.fill),
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 5),
+                                    child: ClipOval(
+                                      child: Container(
+                                        child: Icon(
+                                          _centrosComida[index].icon.icon,
+                                          size: 15,
+                                          color: _centrosComida[index].color,
+                                        ),
+                                        color: Colors.black,
+                                        padding: EdgeInsets.all(7),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                           Spacer(),
                           Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
                                   _centrosComida[index].nombre,
                                   style: TextStyle(
-                                      fontSize: 25,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   _centrosComida[index].descripcion,
                                   style: TextStyle(
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.w600),
+                                    fontSize: 15.0,
+                                  ),
                                 ),
                                 Text(
                                   _centrosComida[index].direccion,
@@ -494,33 +517,13 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
                                       fontWeight: FontWeight.w300),
                                 ),
                                 Text(
-                                  _centrosComida[index].numero,
+                                  "Contacto: "+_centrosComida[index].numero,
                                   style: TextStyle(
                                       fontSize: 15.0,
                                       fontWeight: FontWeight.w300),
                                 ),
                               ]),
                           Spacer(),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 5),
-                                child: ClipOval(
-                                  child: Container(
-                                    child: Icon(
-                                      _centrosComida[index].icon.icon,
-                                      size: 20,
-                                      color: _centrosComida[index].color,
-                                    ),
-                                    color: Colors.black,
-                                    padding: EdgeInsets.all(7),
-                                  ),
-                                ),
-                              )
-                            ],
-                          )
                         ]))))
           ])),
     );
