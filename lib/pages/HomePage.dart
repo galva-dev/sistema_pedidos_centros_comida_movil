@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(),
+      // drawer: Drawer(),
       appBar: MainAppBar(),
       body: listBottomBar[currentIndex],
       bottomNavigationBar: BottomNavyBar(
