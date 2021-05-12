@@ -26,6 +26,8 @@ dependencies:
   flutter_polyline_points:
   geolocator:
   http: ^0.13.3
+  qrscan:
+  permission_handler: ^7.1.0
 
 dev_dependencies:
   flutter_test:

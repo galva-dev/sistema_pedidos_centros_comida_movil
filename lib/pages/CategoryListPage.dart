@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:sistema_registro_pedidos/helpers/Utils.dart';
 import 'package:sistema_registro_pedidos/models/Category.dart';
 import 'package:sistema_registro_pedidos/models/Food.dart';
 import 'package:sistema_registro_pedidos/models/FoodCenter.dart';
@@ -19,7 +18,6 @@ class CategoryListPage extends StatefulWidget {
 }
 
 class _CategoryListPageState extends State<CategoryListPage> {
-  // List<Category> categories = Utils.getMockedCategories();
   List<Category> categories = [];
 
   Future _getBD() async {
@@ -39,19 +37,17 @@ class _CategoryListPageState extends State<CategoryListPage> {
           .bodyBytes); // para mostrar caracteres especiales sin simbolos raros
       Map jsonData = json.decode(body);
 
-      // print('ITEMS: ${jsonData['CC1']['Menu']['C1'].length.toString()}');
-      // print(jsonData['CC1']['Menu']['C2']);
-
       for (int i = 1; i <= jsonData.length; i++) {
         _food.clear();
         for (int j = 1; j <= jsonData['CC$i']['Menu'].length; j++) {
           _food.add(Food(
               jsonData['CC$i']['Menu']['C$j']['nombre'],
-              double.parse(jsonData['CC$i']['Menu']['C$j']['precio'].toString()),
+              double.parse(
+                  jsonData['CC$i']['Menu']['C$j']['precio'].toString()),
               jsonData['CC$i']['Menu']['C$j']['descripcion'],
               jsonData['CC$i']['Menu']['C$j']['img']));
         }
-        switch(int.parse(jsonData['CC$i']['tipo'].toString())) {
+        switch (int.parse(jsonData['CC$i']['tipo'].toString())) {
           case 1:
             _bares.add(FoodCenter(
                 jsonData['CC$i']['nombre'],
@@ -157,21 +153,24 @@ class _CategoryListPageState extends State<CategoryListPage> {
         }
       }
 
-      categories.add(Category("BAR", Icon(FontAwesomeIcons.glassMartiniAlt), Colors.blueAccent,
-          'bar.jpg', _bares));
-      categories.add(Category(
-          "CAFE", Icon(FontAwesomeIcons.mugHot), Colors.red, 'cafe.jpg', _cafe));
-      categories.add(Category("COMIDA RAPIDA", Icon(FontAwesomeIcons.hamburger), Colors.brown,
-          'comidaRapida.jpg', _rapida));
-      categories.add(Category("POSTRE", Icon(FontAwesomeIcons.iceCream), Colors.cyanAccent,
-          'postre.jpg', _postre));
-      categories.add(Category("RESTAURANTE", Icon(FontAwesomeIcons.utensils), Colors.orange,
-          'restaurante.jpg', _restaurante));
+      categories.add(Category("BAR", Icon(FontAwesomeIcons.glassMartiniAlt),
+          Colors.blueAccent, 'bar.jpg', _bares));
+      categories.add(Category("CAFE", Icon(FontAwesomeIcons.mugHot), Colors.red,
+          'cafe.jpg', _cafe));
+      categories.add(Category("COMIDA RAPIDA", Icon(FontAwesomeIcons.hamburger),
+          Colors.brown, 'comidaRapida.jpg', _rapida));
+      categories.add(Category("POSTRE", Icon(FontAwesomeIcons.iceCream),
+          Colors.cyanAccent, 'postre.jpg', _postre));
+      categories.add(Category("RESTAURANTE", Icon(FontAwesomeIcons.utensils),
+          Colors.orange, 'restaurante.jpg', _restaurante));
       setState(() {
-        categories.add(Category("RESTAURANTE TEMATICO", Icon(FontAwesomeIcons.cookieBite),
-            Colors.purpleAccent, 'restauranteTematico.jpg', _tematico));
+        categories.add(Category(
+            "RESTAURANTE TEMATICO",
+            Icon(FontAwesomeIcons.cookieBite),
+            Colors.purpleAccent,
+            'restauranteTematico.jpg',
+            _tematico));
       });
-
     } else {
       print('ERRRRRRRROOOOOOOORRRRRRRRRRRRRR');
     }
@@ -190,13 +189,14 @@ class _CategoryListPageState extends State<CategoryListPage> {
       child: Stack(
         children: [
           Positioned.fill(
-              child: Opacity(
-                opacity: 0.3,
-                child: Image.asset(
-                  'assets/images/background.jpg',
-                  fit: BoxFit.cover,
-                ),
-              )),
+            child: Opacity(
+              opacity: 0.3,
+              child: Image.asset(
+                'assets/images/background.jpg',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
           Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -214,11 +214,11 @@ class _CategoryListPageState extends State<CategoryListPage> {
           ),
           (categories == null || categories.length == 0)
               ? Center(
-            child: Text(
-              'No hay datos',
-              style: TextStyle(color: Colors.white),
-            ),
-          )
+                  child: Text(
+                    'Cargando tus lugares favoritos ...',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
               : _Expanded()
         ],
       ),
@@ -238,8 +238,7 @@ class _CategoryListPageState extends State<CategoryListPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          SelectedCategoryPage(
+                      builder: (context) => SelectedCategoryPage(
                             selectedCategory: this.categories[index],
                           )));
             },
