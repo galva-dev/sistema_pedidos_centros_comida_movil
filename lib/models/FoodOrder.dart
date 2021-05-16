@@ -3,11 +3,26 @@ import 'package:sistema_registro_pedidos/models/FoodCenter.dart';
 import 'package:sistema_registro_pedidos/models/User.dart';
 
 class FoodOrder{
+  List<Food> comidas;
+  FoodCenter centroComida;
+  User cliente;
+  int codigo;
+  String nroMesa;
+  double Total;
   String fecha;
   String hora;
-  int codigo;
-  double Total;
-  List<Food> comidas;
-  User cliente;
-  FoodCenter centroComida;
+  String estado;
+  String valueQR;
+
+  FoodOrder({
+      this.comidas,
+      this.centroComida,
+      this.cliente,
+      this.codigo,
+      this.nroMesa,
+      this.Total,
+      this.fecha,
+      this.hora,
+      this.estado,
+      this.valueQR});
 }

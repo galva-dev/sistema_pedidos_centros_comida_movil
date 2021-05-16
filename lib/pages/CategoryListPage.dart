@@ -21,6 +21,7 @@ class _CategoryListPageState extends State<CategoryListPage> {
   List<Category> categories = [];
 
   Future _getBD() async {
+    
     final uri = Uri.parse(
         "https://sistemaregistropedidos-default-rtdb.firebaseio.com/CentroComida.json");
     final response = await http.get(uri);
@@ -236,11 +237,13 @@ class _CategoryListPageState extends State<CategoryListPage> {
             onCardClick: () {
               //TODO navigate to another page
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SelectedCategoryPage(
-                            selectedCategory: this.categories[index],
-                          )));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SelectedCategoryPage(
+                    selectedCategory: this.categories[index],
+                  ),
+                ),
+              );
             },
           );
         },

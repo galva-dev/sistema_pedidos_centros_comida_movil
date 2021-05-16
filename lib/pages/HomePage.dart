@@ -6,10 +6,12 @@ import 'package:provider/provider.dart';
 import 'package:sistema_registro_pedidos/models/Category.dart';
 import 'package:sistema_registro_pedidos/pages/CategoryListPage.dart';
 import 'package:sistema_registro_pedidos/pages/FoodCentersMapPage.dart';
+import 'package:sistema_registro_pedidos/pages/MyOrderPage.dart';
 import 'package:sistema_registro_pedidos/pages/ProfilePage.dart';
 import 'package:sistema_registro_pedidos/pages/ScannerQRPage.dart';
 import 'package:sistema_registro_pedidos/pages/SelectedCategoryPage.dart';
 import 'package:sistema_registro_pedidos/provider/GoogleProvider.dart';
+import 'package:sistema_registro_pedidos/provider/SelectedPageProvider.dart';
 import 'package:sistema_registro_pedidos/widgets/AppBarWidget.dart';
 import 'package:sistema_registro_pedidos/widgets/CardListCategoriesWidget.dart';
 
@@ -19,29 +21,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int currentIndex = 0;
+  // int currentIndex = 0;
   List listBottomBar = [
     CategoryListPage(),
-    ScannerQRPage(),
     FoodCentersMapPage(),
     ProfilePage()
   ];
 
   @override
   Widget build(BuildContext context) {
+    final indexProvider = Provider.of<SelectedPageProvider>(context, listen: false);
+
     return Scaffold(
       // drawer: Drawer(),
       appBar: MainAppBar(),
-      body: listBottomBar[currentIndex],
+      body: listBottomBar[indexProvider.currentIndex],
       bottomNavigationBar: BottomNavyBar(
         backgroundColor: Color.fromARGB(255, 20, 20, 20),
         animationDuration: Duration(milliseconds: 500),
         curve: Curves.easeInBack,
-        selectedIndex: currentIndex,
+        selectedIndex: indexProvider.currentIndex,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         onItemSelected: (index) {
           setState(() {
-            currentIndex = index;
+            indexProvider.currentIndex = index;
           });
         },
         items: <BottomNavyBarItem>[
@@ -51,13 +54,6 @@ class _HomePageState extends State<HomePage> {
               ),
               title: Text('       Menu'),
               activeColor: Colors.orange,
-              inactiveColor: Colors.blueGrey),
-          BottomNavyBarItem(
-              icon: Icon(
-                FontAwesomeIcons.shoppingCart,
-              ),
-              title: Text('       Pedido'),
-              activeColor: Colors.red,
               inactiveColor: Colors.blueGrey),
           BottomNavyBarItem(
               icon: Icon(
