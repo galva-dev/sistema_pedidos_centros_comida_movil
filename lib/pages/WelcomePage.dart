@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sistema_registro_pedidos/pages/HomePage.dart';
 import 'package:sistema_registro_pedidos/provider/GoogleProvider.dart';
+import 'package:sistema_registro_pedidos/provider/SelectedPageProvider.dart';
 import 'package:sistema_registro_pedidos/widgets/WelcomeWidget.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -16,6 +17,7 @@ class WelcomePage extends StatelessWidget {
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => GoogleSignInProvider()),
+          ChangeNotifierProvider(create: (context)=>SelectedPageProvider()),
         ],
         child: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),

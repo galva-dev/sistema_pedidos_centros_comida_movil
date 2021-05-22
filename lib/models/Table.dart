@@ -1,6 +1,6 @@
 class Board {
   int nro;
-  bool disponible;
+  int disponible;
 
   Board(this.nro, this.disponible);
 }
