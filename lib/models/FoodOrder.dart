@@ -8,7 +8,7 @@ class FoodOrder{
   User cliente;
   int codigo;
   String nroMesa;
-  double Total;
+  double total;
   String fecha;
   String hora;
   String estado;
@@ -20,7 +20,7 @@ class FoodOrder{
       this.cliente,
       this.codigo,
       this.nroMesa,
-      this.Total,
+      this.total,
       this.fecha,
       this.hora,
       this.estado,
