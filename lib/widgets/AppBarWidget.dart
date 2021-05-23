@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MainAppBar extends StatefulWidget implements PreferredSizeWidget {
-
   @override
   _MainAppBarState createState() => _MainAppBarState();
 
@@ -15,19 +14,13 @@ class _MainAppBarState extends State<MainAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Spacer(),
-          Container(
-            height: 50,
-            child: Image.asset('assets/images/logo.png'),
-          ),
-          Spacer(),
-        ],
+      title: Text('¡A COMER!'),
+      centerTitle: true,
+      leading: Container(
+        padding: EdgeInsets.only(left: 10),
+        child: Image.asset('assets/images/logo.png'),
       ),
-      backgroundColor: Color.fromARGB(255, 20, 20, 20),
+      backgroundColor: Colors.transparent,
       elevation: 0.0,
       iconTheme: IconThemeData(color: Colors.white),
       actions: [
