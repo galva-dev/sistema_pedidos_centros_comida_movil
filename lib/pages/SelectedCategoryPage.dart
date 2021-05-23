@@ -14,74 +14,74 @@ class SelectedCategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        extendBodyBehindAppBar: true,
         drawer: Drawer(),
         appBar: MainAppBar(),
         body: Container(
             color: Colors.black,
-            child: Stack(
-                children: [
-                  Positioned.fill(
-                      child: Opacity(
-                        opacity: 0.3,
-                        child: Image.asset(
-                          'assets/images/background.jpg',
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 20, top: 20),
-                    child: Column(
+            child: Stack(children: [
+              Positioned.fill(
+                  child: Opacity(
+                opacity: 0.3,
+                child: Image.asset(
+                  'assets/images/background.jpg',
+                  fit: BoxFit.cover,
+                ),
+              )),
+              Container(
+                padding: EdgeInsets.only(bottom: 20, top: 120),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ClipOval(
-                              child: Container(
-                                child: Icon(
-                                  selectedCategory.icon.icon, size: 25,
-                                  color: Colors.white,),
-                                color: selectedCategory.color,
-                                padding: EdgeInsets.all(10),
-                              ),
+                        ClipOval(
+                          child: Container(
+                            child: Icon(
+                              selectedCategory.icon.icon,
+                              size: 25,
+                              color: Colors.white,
                             ),
-                            SizedBox(width: 20,),
-                            Text(
-                              selectedCategory.name,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 25
-                              ),
-                            )
-                          ],
+                            color: selectedCategory.color,
+                            padding: EdgeInsets.all(10),
+                          ),
                         ),
-                        SizedBox(height: 25,),
-                        Expanded(
-                            child: ListView.builder(
-                              padding: EdgeInsets.only(bottom: 20),
-                              itemCount: selectedCategory.subCategories.length,
-                              itemBuilder: (BuildContext ctx, int index) {
-                                return CardListSubCategories(
-                                  category: selectedCategory
-                                      .subCategories[index],
-                                  onCardClick: () {
-                                    //TODO navigate to details page
-                                    Navigator.push(context, MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetailsFoodPage(
-                                              foodCenter: this.selectedCategory
-                                                  .subCategories[index],)));
-                                  },
-                                );
-                              },
-                            )
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          selectedCategory.name,
+                          style: TextStyle(color: Colors.white, fontSize: 25),
                         )
                       ],
                     ),
-                  )
-                ]
-            )
-        )
-    );
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        padding: EdgeInsets.only(bottom: 20),
+                        itemCount: selectedCategory.subCategories.length,
+                        itemBuilder: (BuildContext ctx, int index) {
+                          return CardListSubCategories(
+                            category: selectedCategory.subCategories[index],
+                            onCardClick: () {
+                              //TODO navigate to details page
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DetailsFoodPage(
+                                            foodCenter: this.selectedCategory.subCategories[index],
+                                          )));
+                            },
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ])));
   }
 }

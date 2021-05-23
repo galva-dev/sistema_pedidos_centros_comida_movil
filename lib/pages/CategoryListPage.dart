@@ -191,7 +191,7 @@ class _CategoryListPageState extends State<CategoryListPage> {
         children: [
           Positioned.fill(
             child: Opacity(
-              opacity: 0.3,
+              opacity: 0.7,
               child: Image.asset(
                 'assets/images/background.jpg',
                 fit: BoxFit.cover,
@@ -199,6 +199,7 @@ class _CategoryListPageState extends State<CategoryListPage> {
             ),
           ),
           Container(
+            padding: EdgeInsets.symmetric(vertical: 80),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -227,8 +228,10 @@ class _CategoryListPageState extends State<CategoryListPage> {
   }
 
   Widget _Expanded() {
-    return Expanded(
+    return Container(
+      padding: EdgeInsets.only(top: 130, bottom: 50),
       child: ListView.builder(
+        physics: BouncingScrollPhysics(),
         padding: EdgeInsets.only(bottom: 20),
         itemCount: categories.length,
         itemBuilder: (BuildContext ctx, int index) {

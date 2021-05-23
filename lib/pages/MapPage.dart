@@ -323,6 +323,12 @@ class _MapPageState extends State<MapPage> {
           Positioned.fill(
             child: GoogleMap(
               myLocationEnabled: true,
+              myLocationButtonEnabled: false,
+              mapToolbarEnabled: true,
+              trafficEnabled: true,
+              zoomGesturesEnabled: true,
+              rotateGesturesEnabled: true,
+              scrollGesturesEnabled: true,
               compassEnabled: false,
               tiltGesturesEnabled: false,
               polylines: _polylines,
