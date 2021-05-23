@@ -1,6 +1,6 @@
 # sistema_registro_pedidos
 
-Proyecto para la materia de proyectos y sistemas 2
+Proyecto para la materia de proyectos de sistemas 2 - Universidad del Valle
 
 ## Getting Started
 
