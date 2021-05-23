@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "114185611492",
+    "project_id": "sistemaregistropedidos",
+    "storage_bucket": "sistemaregistropedidos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114185611492:android:d45c0ca8491dbbc38e64f1",
+        "android_client_info": {
+          "package_name": "com.galva.sistema_registro_pedidos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114185611492-9pgi832dhvedkmb955lfkjv0h0s0a35g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.galva.sistema_registro_pedidos",
+            "certificate_hash": "a32b3325ebd59b612794dd6bf4f0c0611714f604"
+          }
+        },
+        {
+          "client_id": "114185611492-81ctcqi4j33q39obsacaegagvue4k3i8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlUAJuZcns7VhQFlQ_r8v_oPFVRNo9rUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114185611492-81ctcqi4j33q39obsacaegagvue4k3i8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

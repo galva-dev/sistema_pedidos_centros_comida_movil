@@ -1,0 +1,110 @@
+name: sistema_registro_pedidos
+description: Proyecto para la materia de proyectos y sistemas 2
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  font_awesome_flutter:
+  bottom_navy_bar:
+  lottie:
+  firebase_auth: ^1.1.2
+  google_sign_in: ^5.0.2
+  provider:
+  firebase_core:
+  firebase_database:
+  google_maps_flutter:
+  location:
+  flutter_polyline_points:
+  geolocator:
+  http: ^0.13.3
+  qrscan:
+  permission_handler: ^7.1.0
+  circle_wheel_scroll: ^0.0.1+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/images/
+    - assets/images/category/
+    - assets/lottie/
+
+  fonts:
+    - family: KissBoom
+      fonts:
+        - asset: assets/fonts/KissBoom.ttf
+        - asset: assets/fonts/KissBoomItalic.ttf
+
+    - family: Freshman
+      fonts:
+        - asset: assets/fonts/Freshman.ttf
+
+    - family: Alice
+      fonts:
+        - asset: assets/fonts/AliceRegular.ttf
+
+    - family: Josefin
+      fonts:
+        - asset: assets/fonts/JosefinRegular.ttf
+
+    - family: Lora
+      fonts:
+        - asset: assets/fonts/Lora.ttf
+
+    - family: Ubuntu
+      fonts:
+        - asset: assets/fonts/Ubuntu.ttf
+
+    - family: Charlotte
+      fonts:
+        - asset: assets/fonts/charlotte.ttf
+
+    - family: Fat
+      fonts:
+        - asset: assets/fonts/Fat.ttf
+
+    - family: Remachine
+      fonts:
+        - asset: assets/fonts/Remachine.ttf
+
+    - family: Snacker
+      fonts:
+        - asset: assets/fonts/Snacker.ttf
+
+    - family: Charlie
+      fonts:
+        - asset: assets/fonts/Charlie.ttf
+
+    - family: Adventure
+      fonts:
+        - asset: assets/fonts/Adventure.ttf
+
+    - family: AdventureOutline
+      fonts:
+        - asset: assets/fonts/AdventureOutline.ttf
+
+    - family: Bree
+      fonts:
+        - asset: assets/fonts/Bree.ttf
+
+    - family: Libre
+      fonts:
+        - asset: assets/fonts/LibreRegular.ttf
+
+    - family: LibreBold
+      fonts:
+        - asset: assets/fonts/LibreBold.ttf
+
