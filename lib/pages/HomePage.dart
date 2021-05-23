@@ -35,9 +35,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       // drawer: Drawer(),
       appBar: MainAppBar(),
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       body: listBottomBar[indexProvider.currentIndex],
       bottomNavigationBar: BottomNavyBar(
-        backgroundColor: Color.fromARGB(255, 20, 20, 20),
+        backgroundColor: Colors.transparent,
         animationDuration: Duration(milliseconds: 500),
         curve: Curves.easeInBack,
         selectedIndex: indexProvider.currentIndex,

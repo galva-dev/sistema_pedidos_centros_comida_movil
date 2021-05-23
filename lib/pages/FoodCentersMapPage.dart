@@ -273,8 +273,7 @@ class FoodCentersMapPage extends StatefulWidget {
 }
 
 class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
-  final _firebaseRef =
-      FirebaseDatabase.instance.reference().child('CentroComida');
+  final _firebaseRef = FirebaseDatabase.instance.reference().child('CentroComida');
 
   GoogleMapController _controller;
   final user = FirebaseAuth.instance.currentUser;
@@ -300,8 +299,7 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
   }
 
   void setInitialLocation() async {
-    var position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     setState(() {
       currentLocation = LatLng(position.latitude, position.longitude);
     });
@@ -320,8 +318,7 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
           Marker(
               markerId: MarkerId(values[key]['nombre']),
               position: LatLng(values[key]['latitud'], values[key]['longitud']),
-              icon: BitmapDescriptor.defaultMarkerWithHue(
-                  BitmapDescriptor.hueRed),
+              icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
               infoWindow: InfoWindow(
                 title: values[key]['nombre'],
                 snippet: values[key]['direccion'],
@@ -377,19 +374,17 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
       _markers.add(Marker(
           markerId: MarkerId('SourcePin'),
           position: currentLocation,
-          icon: BitmapDescriptor.defaultMarkerWithHue(
-              BitmapDescriptor.hueGreen)));
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)));
     });
-    _controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: currentLocation, zoom: 16, bearing: 90, tilt: 45)));
+    _controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: currentLocation, zoom: 16, bearing: 90, tilt: 45)));
   }
 
   void setPolylines() async {
     PolylineResult result = await polylinesPoints.getRouteBetweenCoordinates(
         "AIzaSyCWdkuc3sr6isHHZL65IM10N2hXkmNsRkY",
         PointLatLng(currentLocation.longitude, currentLocation.longitude),
-        PointLatLng(
-            destinationLocation.latitude, destinationLocation.longitude));
+        PointLatLng(destinationLocation.latitude, destinationLocation.longitude));
 
     if (result.status == 'OK') {
       result.points.forEach((element) {
@@ -439,19 +434,17 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
           child: Stack(children: [
             Center(
                 child: Container(
-                    margin:
-                        EdgeInsets.only(right: 25, bottom: 5, left: 25, top: 5),
+                    margin: EdgeInsets.only(right: 25, bottom: 5, left: 25, top: 5),
                     height: 125.0,
                     width: 300.0,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.white,
-                            offset: Offset.zero,
-                            blurRadius: 35.0,
-                          ),
-                        ]),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(10.0), boxShadow: [
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: Offset.zero,
+                        blurRadius: 35.0,
+                      ),
+                    ]),
                     child: Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50.0),
@@ -463,11 +456,9 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
                                 height: 55.0,
                                 width: 55.0,
                                 decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(50)),
+                                  borderRadius: BorderRadius.all(Radius.circular(50)),
                                   image: DecorationImage(
-                                      image: NetworkImage(
-                                          _centrosComida[index].logo),
+                                      image: NetworkImage(_centrosComida[index].logo),
                                       fit: BoxFit.fill),
                                 ),
                               ),
@@ -500,9 +491,7 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
                               children: [
                                 Text(
                                   _centrosComida[index].nombre,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   _centrosComida[index].descripcion,
@@ -512,15 +501,11 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
                                 ),
                                 Text(
                                   _centrosComida[index].direccion,
-                                  style: TextStyle(
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.w300),
+                                  style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300),
                                 ),
                                 Text(
-                                  "Contacto: "+_centrosComida[index].numero,
-                                  style: TextStyle(
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.w300),
+                                  "Contacto: " + _centrosComida[index].numero,
+                                  style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300),
                                 ),
                               ]),
                           Spacer(),
@@ -532,23 +517,26 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
   @override
   Widget build(BuildContext context) {
     CameraPosition initialCameraPosition = CameraPosition(
-        zoom: CAMERA_ZOOM,
-        tilt: CAMERA_TILT,
-        bearing: CAMERA_BEARING,
-        target: currentLocation);
+        zoom: CAMERA_ZOOM, tilt: CAMERA_TILT, bearing: CAMERA_BEARING, target: currentLocation);
     return Scaffold(
       body: Stack(
         children: [
           Positioned.fill(
             child: GoogleMap(
               myLocationEnabled: true,
-              myLocationButtonEnabled: true,
+              myLocationButtonEnabled: false,
               compassEnabled: false,
               tiltGesturesEnabled: false,
               polylines: _polylines,
               markers: _markers,
               mapType: MapType.normal,
               initialCameraPosition: initialCameraPosition,
+              zoomControlsEnabled: false,
+              zoomGesturesEnabled: true,
+              mapToolbarEnabled: true,
+              rotateGesturesEnabled: true,
+              scrollGesturesEnabled: true,
+              trafficEnabled: true,
               onMapCreated: (GoogleMapController controller) {
                 controller.setMapStyle(MAP_STYLE);
                 _controller = controller;
@@ -566,30 +554,23 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
             ),
           ),
           Positioned(
-            top: 50,
+            top: 120,
             left: 0,
             right: 0,
             child: InkWell(
               onTap: () {
                 _controller.animateCamera(CameraUpdate.newCameraPosition(
-                    CameraPosition(
-                        target: currentLocation,
-                        zoom: 16,
-                        bearing: 90,
-                        tilt: 55)));
+                    CameraPosition(target: currentLocation, zoom: 16, bearing: 90, tilt: 55)));
               },
               child: Container(
                 padding: EdgeInsets.all(15),
-                margin:
-                    EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+                margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(100),
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
-                          blurRadius: 10,
-                          offset: Offset.zero)
+                          color: Colors.black.withOpacity(0.5), blurRadius: 10, offset: Offset.zero)
                     ]),
                 child: Row(
                   children: [
@@ -599,8 +580,7 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           image: DecorationImage(
-                              image: NetworkImage(user.photoURL),
-                              fit: BoxFit.cover),
+                              image: NetworkImage(user.photoURL), fit: BoxFit.cover),
                           border: Border.all(color: Colors.green, width: 2)),
                     ),
                     SizedBox(
@@ -612,13 +592,11 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
                       children: [
                         Text(
                           user.displayName,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.grey),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
                         ),
                         Text(
                           'Mi ubicacion',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.green),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
                         )
                       ],
                     )),
@@ -633,20 +611,21 @@ class _FoodCentersMapPageState extends State<FoodCentersMapPage> {
             ),
           ),
           Positioned(
-              right: 0,
-              left: 0,
-              bottom: 0,
-              child: Container(
-                height: 100,
-                width: MediaQuery.of(context).size.width,
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: _centrosComida.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _foodCenterList(index);
-                  },
-                ),
-              ))
+            right: 0,
+            left: 0,
+            bottom: 50,
+            child: Container(
+              height: 100,
+              width: MediaQuery.of(context).size.width,
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: _centrosComida.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _foodCenterList(index);
+                },
+              ),
+            ),
+          )
         ],
       ),
     );
