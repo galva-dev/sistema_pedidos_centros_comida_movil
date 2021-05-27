@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:sistema_registro_pedidos/models/Category.dart';
 import 'package:sistema_registro_pedidos/models/Food.dart';
 import 'package:sistema_registro_pedidos/models/FoodCenter.dart';
 import 'package:sistema_registro_pedidos/pages/SelectedCategoryPage.dart';
-import 'package:sistema_registro_pedidos/provider/GoogleProvider.dart';
 import 'package:sistema_registro_pedidos/widgets/CardListCategoriesWidget.dart';
 import 'package:http/http.dart' as http;
 
@@ -229,7 +227,7 @@ class _CategoryListPageState extends State<CategoryListPage> {
 
   Widget _Expanded() {
     return Container(
-      padding: EdgeInsets.only(top: 130, bottom: 50),
+      padding: EdgeInsets.only(top: 130, bottom: 60),
       child: ListView.builder(
         physics: BouncingScrollPhysics(),
         padding: EdgeInsets.only(bottom: 20),
@@ -238,7 +236,6 @@ class _CategoryListPageState extends State<CategoryListPage> {
           return CardListCategories(
             category: categories[index],
             onCardClick: () {
-              //TODO navigate to another page
               Navigator.push(
                 context,
                 MaterialPageRoute(

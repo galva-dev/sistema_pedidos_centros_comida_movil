@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:circle_wheel_scroll/circle_wheel_scroll_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
@@ -7,9 +8,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sistema_registro_pedidos/models/Food.dart';
 import 'package:sistema_registro_pedidos/models/FoodCenter.dart';
-import 'package:sistema_registro_pedidos/models/FoodOrder.dart';
-import 'package:sistema_registro_pedidos/pages/MyOrderPage.dart';
-import 'package:sistema_registro_pedidos/provider/SelectedPageProvider.dart';
+import 'package:sistema_registro_pedidos/provider/MiPedido.dart';
+import 'package:sistema_registro_pedidos/widgets/MyOrderPage.dart';
+import 'package:intl/intl.dart';
 
 class OrderMenuListPage extends StatefulWidget {
   FoodCenter food;
@@ -25,16 +26,17 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
   List<Food> miPedido = [];
   List<Food> bebidas = [];
   final user = FirebaseAuth.instance.currentUser;
+  double totalMiPedido = 0;
 
   Future _getBebidas() async {
     bebidas.clear();
-    final uri = Uri.parse(
-        "https://sistemaregistropedidos-default-rtdb.firebaseio.com/CentroComida.json");
+    final uri =
+        Uri.parse("https://sistemaregistropedidos-default-rtdb.firebaseio.com/CentroComida.json");
     final response = await http.get(uri);
 
     if (response.statusCode == 200) {
-      String body = utf8.decode(response
-          .bodyBytes); // para mostrar caracteres especiales sin simbolos raros
+      String body =
+          utf8.decode(response.bodyBytes); // para mostrar caracteres especiales sin simbolos raros
       Map jsonData = json.decode(body);
 
       for (int i = 1; i <= jsonData.length; i++) {
@@ -44,8 +46,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
             setState(() {
               bebidas.add(Food(
                   jsonData['CC$i']['Bebidas']['B$j']['nombre'],
-                  double.parse(
-                      jsonData['CC$i']['Bebidas']['B$j']['precio'].toString()),
+                  double.parse(jsonData['CC$i']['Bebidas']['B$j']['precio'].toString()),
                   jsonData['CC$i']['Bebidas']['B$j']['descripcion'],
                   jsonData['CC$i']['Bebidas']['B$j']['img']));
             });
@@ -140,9 +141,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                         ),
                         Text(
                           "¡Cancelado!",
-                          style: TextStyle(
-                              color: Colors.redAccent,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
                         )
                       ],
                     ),
@@ -153,7 +152,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
             ),
             TextButton(
               child: Text('Aceptar'),
-              onPressed: () {
+              onPressed: () async {
                 if (tipo == 0) {
                   setState(() {
                     miPedido.add(Food(
@@ -176,9 +175,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                           ),
                           Text(
                             "¡Añadido correctamente!",
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
@@ -186,11 +183,8 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                   );
                 } else {
                   setState(() {
-                    miPedido.add(Food(
-                        bebidas[index].nombre,
-                        bebidas[index].precio,
-                        bebidas[index].descripcion,
-                        bebidas[index].img,
+                    miPedido.add(Food(bebidas[index].nombre, bebidas[index].precio,
+                        bebidas[index].descripcion, bebidas[index].img,
                         cantidad: cantidad));
                   });
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -213,7 +207,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                     ),
                   );
                 }
-                Navigator.of(context).pop();
+                await _getPrecioTotal().then((value) => Navigator.of(context).pop());
               },
             ),
           ],
@@ -305,9 +299,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                         ),
                         Text(
                           "¡Cancelado!",
-                          style: TextStyle(
-                              color: Colors.redAccent,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
                         )
                       ],
                     ),
@@ -318,7 +310,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
             ),
             TextButton(
               child: Text('Aceptar'),
-              onPressed: () {
+              onPressed: () async {
                 setState(() {
                   miPedido[index].cantidad = cantidad;
                 });
@@ -341,7 +333,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                     ),
                   ),
                 );
-                Navigator.of(context).pop();
+                await _getPrecioTotal().then((value) => Navigator.of(context).pop());
               },
             ),
           ],
@@ -397,9 +389,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                         ),
                         Text(
                           "¡Cancelado!",
-                          style: TextStyle(
-                              color: Colors.redAccent,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
                         )
                       ],
                     ),
@@ -410,7 +400,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
             ),
             TextButton(
               child: Text('Aceptar'),
-              onPressed: () {
+              onPressed: () async {
                 setState(() {
                   miPedido.removeAt(index);
                 });
@@ -433,7 +423,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                     ),
                   ),
                 );
-                Navigator.of(context).pop();
+                await _getPrecioTotal().then((value) => Navigator.of(context).pop());
               },
             ),
           ],
@@ -442,7 +432,15 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
     );
   }
 
-  Future<void> _confirmarPedido() async {
+  Future<void> _confirmarPedido(BuildContext context) async {
+    final miPedidoProvider = Provider.of<MiPedido>(context, listen: false);
+    Random rnd = new Random(100);
+    var now = new DateTime.now();
+    var formatter = DateFormat('yMd');
+    String fecha = formatter.format(now);
+    formatter = DateFormat.jm();
+    String hora = formatter.format(now);
+
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -488,8 +486,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                         ),
                         Text(
                           "¡Echa un vistazo más!",
-                          style: TextStyle(
-                              color: Colors.blue, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
                         )
                       ],
                     ),
@@ -501,31 +498,24 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
             TextButton(
               child: Text('Enviar mi pedido'),
               onPressed: () {
-                setState(
-                  () {
+                miPedidoProvider.foodCenter = this.widget.food;
+                miPedidoProvider.ciRecepcionista = "";
+                miPedidoProvider.emailUsuario = user.email;
+                miPedidoProvider.nombreUsuario = user.displayName;
+                miPedidoProvider.codigo = rnd.nextInt(9999).toString();
+                miPedidoProvider.estado = "Pendiente";
+                miPedidoProvider.fecha = fecha;
+                miPedidoProvider.hora = hora;
+                miPedidoProvider.miPedido = miPedido;
+                miPedidoProvider.tiempo = -1;
+                miPedidoProvider.total = totalMiPedido;
+                miPedidoProvider.valorQR = this.widget.valorQR;
 
-                    //TODO AQUI VA EL ENVIO DE LOS DATOS A FIREBASE
-
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => MyOrderPage(
-                    //       miPedido: FoodOrder(
-                    //         comidas: ,
-                    //         centroComida: ,
-                    //         cliente: ,
-                    //         codigo: ,
-                    //         estado: "pendiente",
-                    //         fecha: ,
-                    //         hora: ,
-                    //         nroMesa: ,
-                    //         Total: ,
-                    //         valueQR: ,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // );
-                  },
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyOrderPage(),
+                  ),
                 );
               },
             ),
@@ -535,10 +525,22 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
     );
   }
 
+  Future<void> _getPrecioTotal() async {
+    double nuevoPrecio = 0;
+    miPedido.forEach((element) {
+      nuevoPrecio += (element.cantidad * element.precio);
+    });
+    setState(() {
+      totalMiPedido = double.parse(nuevoPrecio.toStringAsFixed(2));
+    });
+    print('precioTotal: $nuevoPrecio bs.');
+  }
+
   @override
   void initState() {
     super.initState();
     _getBebidas();
+    print(this.widget.valorQR);
   }
 
   @override
@@ -549,7 +551,21 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
             headerSliverBuilder: (context, value) {
               return [
                 SliverAppBar(
-                  title: Text('Estamos esperando tu pedido :D'),
+                  stretch: true,
+                  pinned: true,
+                  floating: true,
+                  forceElevated: value,
+                  title: RichText(
+                    text: TextSpan(
+                      style: DefaultTextStyle.of(context).style,
+                      children: [
+                        TextSpan(text: "TOTAL: ",style: TextStyle(color: Colors.white)),
+                        TextSpan(text: "${totalMiPedido.toStringAsFixed(2)}", style: TextStyle(color: Colors.yellow)),
+                        TextSpan(text: " Bs.",style: TextStyle(color: Colors.white)),
+                      ],
+                    ),
+                  ),
+                  centerTitle: true,
                   bottom: TabBar(
                     tabs: [
                       Tab(
@@ -579,7 +595,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
               children: [
                 buildMenu(),
                 buildBebidas(),
-                buildMiPedido(),
+                buildMiPedido(context),
               ],
             ),
           ),
@@ -600,6 +616,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
               ),
             ),
             GridView.builder(
+              physics: BouncingScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 1,
               ),
@@ -629,14 +646,12 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(25),
                                         image: DecorationImage(
-                                          image: NetworkImage(
-                                              this.widget.food.menu[index].img),
+                                          image: NetworkImage(this.widget.food.menu[index].img),
                                           fit: BoxFit.cover,
                                         ),
                                         boxShadow: [
                                           BoxShadow(
-                                              color: Colors.orange
-                                                  .withOpacity(0.8),
+                                              color: Colors.orange.withOpacity(0.8),
                                               offset: Offset.zero,
                                               blurRadius: 50)
                                         ]),
@@ -649,25 +664,18 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                                         width: 80,
                                         decoration: BoxDecoration(
                                           image: DecorationImage(
-                                            image: AssetImage(
-                                                'assets/images/price.png'),
+                                            image: AssetImage('assets/images/price.png'),
                                           ),
                                         ),
                                         child: Column(
                                           children: [
                                             Text(
-                                              this
-                                                  .widget
-                                                  .food
-                                                  .menu[index]
-                                                  .precio
-                                                  .toString(),
+                                              this.widget.food.menu[index].precio.toString(),
                                               style: TextStyle(fontSize: 25),
                                             ),
                                             Text('Bs.')
                                           ],
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                         ),
                                       ),
                                     ),
@@ -679,8 +687,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                               Container(
                                 child: Text(
                                   this.widget.food.menu[index].nombre,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 30),
+                                  style: TextStyle(color: Colors.white, fontSize: 30),
                                 ),
                               ),
                               Container(
@@ -713,6 +720,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
               ),
             ),
             GridView.builder(
+              physics: BouncingScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 1,
               ),
@@ -742,14 +750,12 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(25),
                                         image: DecorationImage(
-                                          image:
-                                              NetworkImage(bebidas[index].img),
+                                          image: NetworkImage(bebidas[index].img),
                                           fit: BoxFit.cover,
                                         ),
                                         boxShadow: [
                                           BoxShadow(
-                                              color: Colors.purpleAccent
-                                                  .withOpacity(0.9),
+                                              color: Colors.purpleAccent.withOpacity(0.9),
                                               offset: Offset.zero,
                                               blurRadius: 50)
                                         ]),
@@ -762,8 +768,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                                         width: 80,
                                         decoration: BoxDecoration(
                                           image: DecorationImage(
-                                            image: AssetImage(
-                                                'assets/images/price.png'),
+                                            image: AssetImage('assets/images/price.png'),
                                           ),
                                         ),
                                         child: Column(
@@ -774,8 +779,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                                             ),
                                             Text('Bs.')
                                           ],
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                         ),
                                       ),
                                     ),
@@ -787,8 +791,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                               Container(
                                 child: Text(
                                   bebidas[index].nombre,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 30),
+                                  style: TextStyle(color: Colors.white, fontSize: 30),
                                 ),
                               ),
                               Container(
@@ -807,7 +810,9 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
         ),
       );
 
-  Widget buildMiPedido() => Container(
+  Widget buildMiPedido(BuildContext context) => Container(
+        height: double.infinity,
+        width: double.infinity,
         color: Colors.black,
         child: Stack(
           children: [
@@ -821,20 +826,35 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
               ),
             ),
             GridView.builder(
+              physics: BouncingScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 1,
               ),
               itemCount: miPedido.length == 0 ? 1 : miPedido.length,
               itemBuilder: (context, index) {
                 return Container(
-                  height: 300,
-                  width: double.infinity,
                   child: miPedido.length == 0
                       ? Center(
-                          child: Text(
-                          'Tu pedido esta vacio',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ))
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Spacer(),
+                              Image.asset(
+                                'assets/images/logo.png',
+                                width: 200,
+                                height: 200,
+                                fit: BoxFit.cover,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Tu pedido esta vacio',
+                                style: TextStyle(color: Colors.white, fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        )
                       : GestureDetector(
                           onLongPress: () {
                             _eliminarMiPedido(index);
@@ -853,14 +873,12 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(25),
                                         image: DecorationImage(
-                                          image:
-                                              NetworkImage(miPedido[index].img),
+                                          image: NetworkImage(miPedido[index].img),
                                           fit: BoxFit.cover,
                                         ),
                                         boxShadow: [
                                           BoxShadow(
-                                              color: Colors.cyanAccent
-                                                  .withOpacity(0.8),
+                                              color: Colors.cyanAccent.withOpacity(0.8),
                                               offset: Offset.zero,
                                               blurRadius: 50)
                                         ]),
@@ -873,8 +891,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                                         width: 80,
                                         decoration: BoxDecoration(
                                           image: DecorationImage(
-                                            image: AssetImage(
-                                                'assets/images/price.png'),
+                                            image: AssetImage('assets/images/price.png'),
                                           ),
                                         ),
                                         child: Column(
@@ -885,8 +902,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                                             ),
                                             Text('Bs.')
                                           ],
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                         ),
                                       ),
                                     ),
@@ -898,24 +914,19 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                               Container(
                                 child: Text(
                                   miPedido[index].nombre,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 30),
+                                  style: TextStyle(color: Colors.white, fontSize: 30),
                                 ),
                               ),
                               Container(
                                 child: Text(
                                   miPedido[index].descripcion,
-                                  style: TextStyle(
-                                      color: Colors.yellow, fontSize: 25),
+                                  style: TextStyle(color: Colors.yellow, fontSize: 25),
                                 ),
                               ),
                               Container(
                                 child: Text(
-                                  "Cantidad: " +
-                                      miPedido[index].cantidad.toString(),
-                                  style: TextStyle(
-                                      color: Colors.blue.shade600,
-                                      fontSize: 25),
+                                  "Cantidad: " + miPedido[index].cantidad.toString(),
+                                  style: TextStyle(color: Colors.blue.shade300, fontSize: 25),
                                 ),
                               ),
                             ],
@@ -930,7 +941,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                     bottom: 50,
                     child: FloatingActionButton(
                       onPressed: () {
-                        _confirmarPedido();
+                        _confirmarPedido(context);
                       },
                       backgroundColor: Colors.green,
                       child: Icon(FontAwesomeIcons.check),

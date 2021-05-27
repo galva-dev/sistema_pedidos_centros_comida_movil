@@ -5,7 +5,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:sistema_registro_pedidos/models/FoodCenter.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:sistema_registro_pedidos/models/Table.dart';
-import 'package:sistema_registro_pedidos/widgets/OrderMenuListPage.dart';
+import 'package:sistema_registro_pedidos/pages/OrderMenuListPage.dart';
 
 class ScannerQRPage extends StatefulWidget {
   FoodCenter foodCenter;
