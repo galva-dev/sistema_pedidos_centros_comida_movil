@@ -37,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Scaffold(
             backgroundColor: Colors.transparent,
             body: Container(
-              padding: EdgeInsets.only(bottom: 50),
+              padding: EdgeInsets.only(bottom: 60),
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Padding(
