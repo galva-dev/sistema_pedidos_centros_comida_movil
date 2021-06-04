@@ -1,5 +1,10 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:sistema_registro_pedidos/database/FirebaseDB.dart';
 import 'package:sistema_registro_pedidos/provider/MiPedido.dart';
 
 class MyOrderPage extends StatefulWidget {
@@ -8,159 +13,210 @@ class MyOrderPage extends StatefulWidget {
 }
 
 class _MyOrderPageState extends State<MyOrderPage> {
+  Timer _timer;
+
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  backgroundColor: Colors.black54,
+                  title: Text(
+                    '¡Cuidado!',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Text(
+                          'Podras salir de esta pantalla cuando pagues el pedido',
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Icon(
+                          FontAwesomeIcons.solidSmileWink,
+                          color: Colors.blue,
+                          size: 20,
+                        )
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text('Okay!'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ))) ??
+        false;
+  }
+
   @override
   void initState() {
     super.initState();
+    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+      FirebaseDB.actualizarEstado(context);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final miPedidoProvider = Provider.of<MiPedido>(context, listen: true);
-
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            expandedHeight: 200,
-            floating: true,
-            title: Container(
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.7),
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              padding: EdgeInsets.all(5),
-              child: Text(
-                'Mi pedido',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-            leading: Container(),
-            centerTitle: true,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              background: ClipRRect(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(50),
-                  bottomRight: Radius.circular(50),
+    var miPedidoProvider = Provider.of<MiPedido>(context, listen: true);
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              expandedHeight: 200,
+              floating: true,
+              title: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.7),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 300,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: Image.network(miPedidoProvider.foodCenter.banner).image,
-                              fit: BoxFit.cover)),
-                    ),
-                    Positioned.fill(
-                      child: Container(
+                padding: EdgeInsets.all(5),
+                child: Text(
+                  'Tu pedido fue enviado :D',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+              leading: Container(),
+              centerTitle: true,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                background: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(50),
+                    bottomRight: Radius.circular(50),
+                  ),
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 300,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                              colors: [Colors.black.withOpacity(0.9), Colors.transparent]),
+                            image: DecorationImage(
+                                image: Image.network(miPedidoProvider.foodCenter.banner).image,
+                                fit: BoxFit.cover)),
+                      ),
+                      Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors: [Colors.black.withOpacity(0.9), Colors.transparent]),
+                          ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              height: 100,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(miPedidoProvider.foodCenter.logo),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(50)),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(text: 'Usuario: \n'),
-                                    TextSpan(
-                                        text: '${miPedidoProvider.nombreUsuario}',
-                                        style: TextStyle(color: Colors.yellow)),
-                                  ]),
-                                ),
-                                RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(text: 'Mesa: '),
-                                    TextSpan(
-                                        text: '${miPedidoProvider.valorQR.split('_')[2]}',
-                                        style: TextStyle(color: Colors.yellow)),
-                                  ]),
-                                ),
-                                RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(text: 'Codigo: '),
-                                    TextSpan(
-                                        text: '${miPedidoProvider.codigo}',
-                                        style: TextStyle(color: Colors.yellow)),
-                                  ]),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(text: 'Fecha: '),
-                                    TextSpan(
-                                        text: '${miPedidoProvider.fecha}',
-                                        style: TextStyle(color: Colors.yellow)),
-                                  ]),
-                                ),
-                                RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(text: 'Hora: '),
-                                    TextSpan(
-                                        text: '${miPedidoProvider.hora}',
-                                        style: TextStyle(color: Colors.yellow)),
-                                  ]),
-                                ),
-                                RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(text: 'Total: '),
-                                    TextSpan(
-                                        text: '${miPedidoProvider.total}',
-                                        style: TextStyle(color: Colors.yellow)),
-                                  ]),
-                                ),
-                                RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(text: 'Estado: '),
-                                    TextSpan(
-                                        text: '${miPedidoProvider.estado}',
-                                        style: TextStyle(color: Colors.yellow)),
-                                  ]),
-                                ),
-                              ],
-                            )
-                          ],
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(miPedidoProvider.foodCenter.logo),
+                                        fit: BoxFit.cover),
+                                    borderRadius: BorderRadius.circular(50)),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(text: 'Usuario: \n'),
+                                      TextSpan(
+                                          text: '${miPedidoProvider.nombreUsuario}',
+                                          style: TextStyle(color: Colors.yellow)),
+                                    ]),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(text: 'Mesa: '),
+                                      TextSpan(
+                                          text: '${miPedidoProvider.valorQR}',
+                                          style: TextStyle(color: Colors.yellow)),
+                                    ]),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(text: 'Codigo: '),
+                                      TextSpan(
+                                          text: '${miPedidoProvider.codigo}',
+                                          style: TextStyle(color: Colors.yellow)),
+                                    ]),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(text: 'Fecha: '),
+                                      TextSpan(
+                                          text: '${miPedidoProvider.fecha}',
+                                          style: TextStyle(color: Colors.yellow)),
+                                    ]),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(text: 'Hora: '),
+                                      TextSpan(
+                                          text: '${miPedidoProvider.hora}',
+                                          style: TextStyle(color: Colors.yellow)),
+                                    ]),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(text: 'Total: '),
+                                      TextSpan(
+                                          text: '${miPedidoProvider.total}',
+                                          style: TextStyle(color: Colors.yellow)),
+                                    ]),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
+            SliverFillRemaining(
+              child: ListaPedido(miPedidoProvider: miPedidoProvider),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.red,
+          onPressed: () {
+            exit(0);
+          },
+          splashColor: Colors.greenAccent,
+          child: Center(
+            child: Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
           ),
-          SliverFillRemaining(
-            child: ListaPedido(miPedidoProvider: miPedidoProvider),
-          ),
-        ],
+        ),
       ),
     );
   }

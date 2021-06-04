@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sistema_registro_pedidos/models/Food.dart';
 import 'package:sistema_registro_pedidos/models/FoodCenter.dart';
@@ -7,18 +8,28 @@ class MiPedido with ChangeNotifier {
   FoodCenter foodCenter;
   String emailUsuario;
   String nombreUsuario;
-  String ciRecepcionista = "";
+  String ciRecepcionista = "Ingrese el nombre del recepcionista";
   String codigo = "";
   String estado = "";
   String fecha = "";
   String hora = "";
   String valorQR = "";
-  double tiempo = 0;
+  int tiempo = -1;
   double total = 0;
+  String centroComidaKey = "n/a";
+  String pedidoKey;
+
+  String get getCentroComidaKey => this.centroComidaKey;
+
+  set setCentroComidaKey(String centroComidaKey) => this.centroComidaKey = centroComidaKey;
+
+  get getPedidoKey => this.pedidoKey;
+
+  set setPedidoKey(pedidoKey) => this.pedidoKey = pedidoKey;
 
   String get getValorQR => this.valorQR;
 
-  set setValorQR(String valorQR){
+  set setValorQR(String valorQR) {
     this.valorQR = valorQR;
   }
 
@@ -44,7 +55,10 @@ class MiPedido with ChangeNotifier {
 
   get getEstado => this.estado;
 
-  set setEstado(estado) => this.estado = estado;
+  set setEstado(estado) {
+    this.estado = estado;
+    notifyListeners();
+  }
 
   get getFecha => this.fecha;
 

@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:sistema_registro_pedidos/database/FirebaseDB.dart';
 import 'package:sistema_registro_pedidos/models/Food.dart';
 import 'package:sistema_registro_pedidos/models/FoodCenter.dart';
 import 'package:sistema_registro_pedidos/provider/MiPedido.dart';
@@ -511,12 +512,7 @@ class _OrderMenuListPageState extends State<OrderMenuListPage> {
                 miPedidoProvider.total = totalMiPedido;
                 miPedidoProvider.valorQR = this.widget.valorQR;
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MyOrderPage(),
-                  ),
-                );
+                FirebaseDB.enviarPedido(context);
               },
             ),
           ],
