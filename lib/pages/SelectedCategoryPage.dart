@@ -67,13 +67,14 @@ class SelectedCategoryPage extends StatelessWidget {
                           return CardListSubCategories(
                             category: selectedCategory.subCategories[index],
                             onCardClick: () {
-                              //TODO navigate to details page
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => DetailsFoodPage(
-                                            foodCenter: this.selectedCategory.subCategories[index],
-                                          )));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailsFoodPage(
+                                    foodCenter: this.selectedCategory.subCategories[index],
+                                  ),
+                                ),
+                              );
                             },
                           );
                         },

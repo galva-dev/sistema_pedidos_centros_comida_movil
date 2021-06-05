@@ -5,7 +5,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:sistema_registro_pedidos/models/FoodCenter.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:sistema_registro_pedidos/models/Table.dart';
-import 'package:sistema_registro_pedidos/widgets/OrderMenuListPage.dart';
+import 'package:sistema_registro_pedidos/pages/OrderMenuListPage.dart';
 
 class ScannerQRPage extends StatefulWidget {
   FoodCenter foodCenter;
@@ -24,9 +24,6 @@ class _ScannerQRPageState extends State<ScannerQRPage> {
   @override
   void initState() {
     super.initState();
-    _valueQR = this.widget.foodCenter.latitud.toString() +
-        "_" +
-        this.widget.foodCenter.longitud.toString();
     _checkPermissionCamera();
   }
 
@@ -42,7 +39,7 @@ class _ScannerQRPageState extends State<ScannerQRPage> {
       String read = await scanner.scan();
       try {
         if (int.parse(read) <= this.widget.mesas.length) {
-          _valueQR += "_" + read;
+          _valueQR += read;
           setState(() {
             codigoValido = true;
           });
