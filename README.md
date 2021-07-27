@@ -2,15 +2,4 @@
 
 Proyecto para la materia de proyectos de sistemas 2 - Universidad del Valle
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Aplicacion movil la cual te permite realizar pedidos al escanear un codigo QR de cualquier centro de comida registrado en la aplicacion donde tambien podrá visualizar el menu y las bebidas que ofrece dicho centro de comida, como tambien la ubicacion en un mapa de google maps para tener referencia del lugar donde se encuentra el mismo. El pedido que se realice se enviará al SISTEMA DE PEDIDOS PARA CENTROS DE COMIDA - APP WEB en la que se un empleado podra visualizar el pedido y posteriormente será llevado a su mesa
